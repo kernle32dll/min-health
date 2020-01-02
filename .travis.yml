@@ -25,7 +25,7 @@ env:
 script:
   - CGO_ENABLED=0 go build -ldflags="-w -s" .
   - go test -v -race -coverprofile=coverage.txt -covermode=atomic ./...
-  - rename s/min-health/min-health-$OS-$ARCH/ min-health*
+  - rename s/min-health/min-health-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH/ min-health*
   - ls
 
 after_success:
