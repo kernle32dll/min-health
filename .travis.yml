@@ -23,10 +23,9 @@ env:
     - GO111MODULE=on
 
 script:
-  - CGO_ENABLED=0 go build -ldflags="-w -s" .
+  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then CGO_ENABLED=0 go build -ldflags="-w -s" -o min-health-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH.exe . ; fi
+  - if [ "$TRAVIS_OS_NAME" != "windows" ]; then CGO_ENABLED=0 go build -ldflags="-w -s" -o min-health-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH . ; fi
   - go test -v -race -coverprofile=coverage.txt -covermode=atomic ./...
-  - rename s/min-health/min-health-$TRAVIS_OS_NAME-$TRAVIS_CPU_ARCH/ min-health*
-  - ls
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
