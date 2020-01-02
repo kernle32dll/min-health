@@ -38,4 +38,4 @@ deploy:
   on:
     repo: kernle32dll/min-health
     tags: true
-    go: 1.13.X
+    go: 1.13.x
