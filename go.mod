@@ -1,3 +1,3 @@
 module github.com/kernle32dll/min-health
 
-go 1.11
+go 1.13
