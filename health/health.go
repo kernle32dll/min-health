@@ -7,9 +7,10 @@ import (
 
 // Config contains the parsed config for the health check
 type Config struct {
-	Method string
-	URL    string
-	Client *http.Client
+	Method  string
+	URL     string
+	Client  *http.Client
+	LogFunc func(a ...interface{})
 }
 
 // DoRequest executes an health check, and returns true if it succeeded (or false if otherwise)
@@ -19,9 +20,16 @@ func DoRequest(config *Config) bool {
 		return false
 	}
 
+	logger := config.LogFunc
+	if logger == nil {
+		logger = func(a ...interface{}) {
+			fmt.Println(a...)
+		}
+	}
+
 	req, err := http.NewRequest(config.Method, config.URL, nil)
 	if err != nil {
-		fmt.Println(fmt.Sprintf("error constructing request: %s", err))
+		logger(fmt.Sprintf("error constructing request: %s", err))
 		return false
 	}
 
@@ -32,7 +40,7 @@ func DoRequest(config *Config) bool {
 
 	resp, err := client.Do(req)
 	if err != nil {
-		fmt.Println(fmt.Sprintf("error conducting request: %s", err))
+		logger(fmt.Sprintf("error conducting request: %s", err))
 		return false
 	}
 
@@ -40,6 +48,6 @@ func DoRequest(config *Config) bool {
 		return true
 	}
 
-	fmt.Println(fmt.Sprintf("unhealthy status code: %d", resp.StatusCode))
+	logger(fmt.Sprintf("unhealthy status code: %d", resp.StatusCode))
 	return false
 }

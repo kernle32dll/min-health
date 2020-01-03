@@ -14,6 +14,8 @@ func TestMakeRequest(t *testing.T) {
 		URL:    "http://localhost/",
 	}
 
+	customLoggerCalled := false
+
 	tests := []struct {
 		name   string
 		config *health.Config
@@ -35,6 +37,13 @@ func TestMakeRequest(t *testing.T) {
 			URL:    defaultConfig.URL,
 			Client: &http.Client{},
 		}, statusCodeAnsweringServer(http.StatusOK), true},
+		{"custom-log-func", &health.Config{
+			Method: defaultConfig.Method,
+			URL:    string(0x7f),
+			LogFunc: func(a ...interface{}) {
+				customLoggerCalled = true
+			},
+		}, nil, false},
 		{"no-config", nil, nil, false},
 	}
 	for _, tt := range tests {
@@ -50,6 +59,12 @@ func TestMakeRequest(t *testing.T) {
 
 			if got := health.DoRequest(tt.config); got != tt.want {
 				t.Errorf("DoRequest() = %v, want %v", got, tt.want)
+			}
+
+			if tt.name == "custom-log-func" {
+				if !customLoggerCalled {
+					t.Fail()
+				}
 			}
 		})
 	}
