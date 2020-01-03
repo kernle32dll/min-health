@@ -11,8 +11,8 @@ type Config struct {
 	URL    string
 }
 
-// MakeRequest executes an health check, and returns true if it succeeded (or false if otherwise)
-func MakeRequest(config *Config) bool {
+// DoRequest executes an health check, and returns true if it succeeded (or false if otherwise)
+func DoRequest(config *Config) bool {
 	req, err := http.NewRequest(config.Method, config.URL, nil)
 	if err != nil {
 		fmt.Println(fmt.Sprintf("error constructing request: %s", err))

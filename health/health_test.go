@@ -42,8 +42,8 @@ func TestMakeRequest(t *testing.T) {
 				tt.config = &config
 			}
 
-			if got := health.MakeRequest(tt.config); got != tt.want {
-				t.Errorf("MakeRequest() = %v, want %v", got, tt.want)
+			if got := health.DoRequest(tt.config); got != tt.want {
+				t.Errorf("DoRequest() = %v, want %v", got, tt.want)
 			}
 		})
 	}

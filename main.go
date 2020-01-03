@@ -13,7 +13,7 @@ import (
 func main() {
 	config := ParseArguments(os.Args[1:])
 
-	if health.MakeRequest(config) {
+	if health.DoRequest(config) {
 		os.Exit(0)
 	}
 
