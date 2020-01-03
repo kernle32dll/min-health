@@ -30,6 +30,11 @@ func TestMakeRequest(t *testing.T) {
 			Method: defaultConfig.Method,
 			URL:    string(0x7f),
 		}, nil, false},
+		{"custom-http-client", &health.Config{
+			Method: defaultConfig.Method,
+			URL:    defaultConfig.URL,
+			Client: &http.Client{},
+		}, statusCodeAnsweringServer(http.StatusOK), true},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

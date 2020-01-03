@@ -9,6 +9,7 @@ import (
 type Config struct {
 	Method string
 	URL    string
+	Client *http.Client
 }
 
 // DoRequest executes an health check, and returns true if it succeeded (or false if otherwise)
@@ -19,7 +20,12 @@ func DoRequest(config *Config) bool {
 		return false
 	}
 
-	resp, err := http.DefaultClient.Do(req)
+	client := config.Client
+	if client == nil {
+		client = http.DefaultClient
+	}
+
+	resp, err := client.Do(req)
 	if err != nil {
 		fmt.Println(fmt.Sprintf("error conducting request: %s", err))
 		return false
