@@ -14,6 +14,11 @@ type Config struct {
 
 // DoRequest executes an health check, and returns true if it succeeded (or false if otherwise)
 func DoRequest(config *Config) bool {
+	if config == nil {
+		fmt.Println("no config provided")
+		return false
+	}
+
 	req, err := http.NewRequest(config.Method, config.URL, nil)
 	if err != nil {
 		fmt.Println(fmt.Sprintf("error constructing request: %s", err))

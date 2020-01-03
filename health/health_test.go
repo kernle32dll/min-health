@@ -35,6 +35,7 @@ func TestMakeRequest(t *testing.T) {
 			URL:    defaultConfig.URL,
 			Client: &http.Client{},
 		}, statusCodeAnsweringServer(http.StatusOK), true},
+		{"no-config", nil, nil, false},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
